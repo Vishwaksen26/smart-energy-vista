@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Zap, MessageCircle, X } from "lucide-react";
+import { Zap, MessageCircle, X, Sparkles } from "lucide-react";
 import { Chatbot } from "@/components/Chatbot";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -70,9 +70,9 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         {!showChatbot && (
           <Button
             onClick={() => setShowChatbot(true)}
-            className="rounded-full w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg animate-bounce"
+            className="rounded-full w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg group animate-pulse hover:animate-none"
           >
-            <MessageCircle className="h-6 w-6" />
+            <Sparkles className="h-6 w-6 group-hover:scale-110 transition-transform" />
           </Button>
         )}
         
@@ -80,7 +80,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           <Card className="w-80 h-96 shadow-xl animate-scale-in">
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg p-3">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold">Energy Assistant</h3>
+                <div className="flex items-center">
+                  <Sparkles className="h-5 w-5 mr-2" />
+                  <h3 className="text-lg font-semibold">Energy Assistant</h3>
+                </div>
                 <Button
                   variant="ghost"
                   size="sm"

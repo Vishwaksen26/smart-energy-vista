@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Bot, User, Lightbulb } from "lucide-react";
+import { Send, Bot, User, Lightbulb, Sparkles } from "lucide-react";
 
 interface Message {
   id: string;
@@ -29,6 +29,12 @@ const predefinedResponses: Record<string, string> = {
   "what appliances use most energy": "The biggest energy consumers in most homes are heating and cooling systems, water heaters, refrigerators, clothes dryers, and lighting systems.",
   "tips for saving energy": "To save energy: Turn off lights when not in use, unplug devices that aren't being used, use energy-efficient appliances, improve insulation, use programmable thermostats, and wash clothes in cold water.",
   "help": "I can help you with questions about energy monitoring, adding appliances, generating bills, understanding your consumption patterns, and system features. What would you like to know?",
+  "how can i save electricity": "You can save electricity by: 1) Upgrading to energy-efficient appliances, 2) Installing LED lighting, 3) Using smart power strips to eliminate phantom energy use, 4) Utilizing natural light when possible, 5) Setting computers and devices to power-saving modes, 6) Properly insulating your home, and 7) Maintaining heating and cooling systems regularly.",
+  "give me tips to save electricity": "Here are top electricity-saving tips: 1) Adjust your thermostat (lower in winter, higher in summer), 2) Wash clothes in cold water, 3) Air-dry clothes when possible, 4) Use power strips for electronics and turn them off when not in use, 5) Replace air filters regularly, 6) Use ceiling fans to reduce AC usage, 7) Cook with lids on pots to reduce cooking time, 8) Run dishwashers and washing machines only when full.",
+  "best time to use appliances": "To save on electricity costs, try using major appliances during off-peak hours (typically evenings after 7pm, early mornings before 7am, and weekends). Some utility companies offer time-of-use rates that make electricity cheaper during these periods.",
+  "energy saving myths": "Common energy myths include: 1) Leaving lights on uses less energy than turning them on/off (false), 2) Screen savers save energy (they don't, sleep mode does), 3) Closing vents saves energy (actually reduces HVAC efficiency), 4) Charging phone overnight damages battery and wastes energy (modern phones prevent overcharging).",
+  "smart home energy savings": "Smart home devices can reduce energy usage by: 1) Using smart thermostats to optimize heating/cooling, 2) Installing motion sensors for lights, 3) Using smart plugs to schedule power to devices, 4) Setting up automated routines for energy management, and 5) Monitoring energy usage in real-time with smart meters.",
+  "renewable energy options": "You can incorporate renewable energy through: 1) Solar panel installation, 2) Community solar programs, 3) Wind energy for suitable properties, 4) Choosing renewable energy plans from your utility provider, or 5) Installing solar water heaters which are more affordable than full solar systems.",
   "default": "I'm here to help with your energy management questions! Try asking about how the system works, adding appliances, or generating bills."
 };
 
@@ -46,7 +52,9 @@ export const Chatbot = () => {
     "How does this system work?",
     "What appliances use most energy?",
     "Tips for saving energy",
-    "How do I add appliances?"
+    "How can I save electricity?",
+    "Best time to use appliances",
+    "Smart home energy savings"
   ]);
 
   const handleSend = () => {
@@ -115,18 +123,18 @@ export const Chatbot = () => {
               <div className={`rounded-full p-2 ${
                 message.sender === "user" 
                   ? "bg-blue-600 text-white" 
-                  : "bg-gray-200 text-gray-700"
+                  : "bg-gradient-to-br from-blue-400 to-purple-500 text-white"
               }`}>
                 {message.sender === "user" ? (
                   <User className="h-4 w-4" />
                 ) : (
-                  <Bot className="h-4 w-4" />
+                  <Sparkles className="h-4 w-4" />
                 )}
               </div>
               <div className={`max-w-[80%] p-3 rounded-lg ${
                 message.sender === "user"
                   ? "bg-blue-600 text-white ml-auto"
-                  : "bg-gray-100 text-gray-900"
+                  : "bg-white/80 backdrop-blur-sm shadow-md border border-purple-100 text-gray-900"
               }`}>
                 <p className="text-sm">{message.text}</p>
                 <span className="text-xs opacity-70 mt-1 block">
@@ -169,7 +177,7 @@ export const Chatbot = () => {
             placeholder="Ask me anything..."
             className="flex-1"
           />
-          <Button onClick={handleSend} size="sm">
+          <Button onClick={handleSend} size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
             <Send className="h-4 w-4" />
           </Button>
         </div>

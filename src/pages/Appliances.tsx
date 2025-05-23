@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Zap, MapPin, TrendingUp, TrendingDown } from "lucide-react";
+import { Plus, Zap, MapPin, TrendingUp, TrendingDown, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Appliance {
@@ -43,12 +43,61 @@ const sampleAppliances: Appliance[] = [
     originalConsumption: 1200,
     currentConsumption: 1350,
     image: "❄️"
+  },
+  {
+    id: "4",
+    name: "Smart TV",
+    location: "Living Room",
+    originalConsumption: 80,
+    currentConsumption: 72,
+    image: "📺"
+  },
+  {
+    id: "5",
+    name: "Electric Oven",
+    location: "Kitchen",
+    originalConsumption: 2400,
+    currentConsumption: 2500,
+    image: "🔥"
+  },
+  {
+    id: "6",
+    name: "Ceiling Fan",
+    location: "Bedroom",
+    originalConsumption: 60,
+    currentConsumption: 55,
+    image: "💨"
+  },
+  {
+    id: "7",
+    name: "Water Heater",
+    location: "Bathroom",
+    originalConsumption: 4000,
+    currentConsumption: 3800,
+    image: "🚿"
+  },
+  {
+    id: "8",
+    name: "Desktop Computer",
+    location: "Office",
+    originalConsumption: 175,
+    currentConsumption: 180,
+    image: "💻"
+  },
+  {
+    id: "9",
+    name: "LED Lights",
+    location: "Living Room",
+    originalConsumption: 40,
+    currentConsumption: 38,
+    image: "💡"
   }
 ];
 
 export default function Appliances() {
   const [appliances, setAppliances] = useState<Appliance[]>(sampleAppliances);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     location: "",
@@ -101,6 +150,11 @@ export default function Appliances() {
     return { status: "poor", color: "bg-red-500", text: "Poor" };
   };
 
+  const filteredAppliances = appliances.filter(appliance => 
+    appliance.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    appliance.location.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <div className="container mx-auto px-4 py-8">
@@ -150,6 +204,7 @@ export default function Appliances() {
                       <SelectItem value="Bedroom">Bedroom</SelectItem>
                       <SelectItem value="Bathroom">Bathroom</SelectItem>
                       <SelectItem value="Utility Room">Utility Room</SelectItem>
+                      <SelectItem value="Office">Office</SelectItem>
                       <SelectItem value="Garage">Garage</SelectItem>
                     </SelectContent>
                   </Select>
@@ -189,7 +244,10 @@ export default function Appliances() {
                       <SelectItem value="❄️">❄️ Air Conditioner</SelectItem>
                       <SelectItem value="📺">📺 Television</SelectItem>
                       <SelectItem value="💡">💡 Light</SelectItem>
-                      <SelectItem value="🔥">🔥 Heater</SelectItem>
+                      <SelectItem value="🔥">🔥 Heater/Oven</SelectItem>
+                      <SelectItem value="💨">💨 Fan</SelectItem>
+                      <SelectItem value="🚿">🚿 Water Heater</SelectItem>
+                      <SelectItem value="💻">💻 Computer</SelectItem>
                       <SelectItem value="⚡">⚡ Generic</SelectItem>
                     </SelectContent>
                   </Select>
@@ -203,8 +261,20 @@ export default function Appliances() {
           </Dialog>
         </div>
 
+        <div className="mb-6">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            <Input 
+              className="pl-10" 
+              placeholder="Search appliances by name or location..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {appliances.map((appliance, index) => {
+          {filteredAppliances.map((appliance, index) => {
             const efficiency = getEfficiencyStatus(appliance.originalConsumption, appliance.currentConsumption);
             const consumptionDiff = appliance.currentConsumption - appliance.originalConsumption;
             
@@ -271,14 +341,14 @@ export default function Appliances() {
           })}
         </div>
 
-        {appliances.length === 0 && (
+        {filteredAppliances.length === 0 && (
           <div className="text-center py-12">
             <Zap className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-medium text-gray-900 mb-2">No appliances yet</h3>
-            <p className="text-gray-500 mb-6">Start monitoring your energy consumption by adding your first appliance.</p>
+            <h3 className="text-xl font-medium text-gray-900 mb-2">No appliances found</h3>
+            <p className="text-gray-500 mb-6">Try adjusting your search or add a new appliance.</p>
             <Button onClick={() => setShowAddForm(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              Add Your First Appliance
+              Add New Appliance
             </Button>
           </div>
         )}
