@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Bot, User } from "lucide-react";
+import { Send, Bot, User, Lightbulb } from "lucide-react";
 
 interface Message {
   id: string;
@@ -13,12 +13,21 @@ interface Message {
 }
 
 const predefinedResponses: Record<string, string> = {
+  "hi": "Hello! How can I assist you with energy management today?",
+  "hello": "Hi there! How can I help you manage your energy consumption?",
   "how does this system work": "Our Smart Energy Management System monitors your appliances in real-time, tracks consumption patterns, and provides intelligent insights to help you optimize energy usage and reduce costs.",
   "what appliances can i monitor": "You can monitor any electrical appliance including refrigerators, washing machines, air conditioners, televisions, lights, and more. Simply add them to your appliances page.",
   "how accurate are the bills": "Our bill calculations use real consumption data and current utility rates to provide accurate estimates. The demo uses sample data for demonstration purposes.",
   "can i set energy budgets": "Yes! You can set monthly energy budgets in your profile and receive notifications when you're approaching your limits.",
   "how do i add appliances": "Go to the Appliances page, click 'Add Appliance', fill in the details like name, location, and expected consumption, then save it to start monitoring.",
   "what is energy efficiency": "Energy efficiency means using less energy to provide the same level of performance. Our system helps identify inefficient appliances that consume more power than expected.",
+  "how can i save money": "You can save money by identifying high-consumption appliances, setting energy usage schedules, replacing inefficient appliances, and following our personalized recommendations.",
+  "what is kwh": "kWh (kilowatt-hour) is a unit of energy equal to the energy transferred or expended in one hour by one kilowatt of power. It's how your electricity consumption is measured by utility companies.",
+  "what is a smart meter": "A smart meter is a device that records electricity consumption in short intervals and communicates that information back to the utility company for monitoring and billing purposes.",
+  "how often is data updated": "In this demo, data is simulated. In a real implementation, data would be updated in real-time as it's received from your smart meters and connected appliances.",
+  "what causes high electricity bills": "High electricity bills can be caused by inefficient appliances, leaving devices on standby, poor insulation, extreme weather requiring more heating/cooling, and energy-intensive activities.",
+  "what appliances use most energy": "The biggest energy consumers in most homes are heating and cooling systems, water heaters, refrigerators, clothes dryers, and lighting systems.",
+  "tips for saving energy": "To save energy: Turn off lights when not in use, unplug devices that aren't being used, use energy-efficient appliances, improve insulation, use programmable thermostats, and wash clothes in cold water.",
   "help": "I can help you with questions about energy monitoring, adding appliances, generating bills, understanding your consumption patterns, and system features. What would you like to know?",
   "default": "I'm here to help with your energy management questions! Try asking about how the system works, adding appliances, or generating bills."
 };
@@ -33,6 +42,12 @@ export const Chatbot = () => {
     },
   ]);
   const [input, setInput] = useState("");
+  const [suggestions] = useState([
+    "How does this system work?",
+    "What appliances use most energy?",
+    "Tips for saving energy",
+    "How do I add appliances?"
+  ]);
 
   const handleSend = () => {
     if (!input.trim()) return;
@@ -66,7 +81,7 @@ export const Chatbot = () => {
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, botMessage]);
-    }, 1000);
+    }, 800);
 
     setInput("");
   };
@@ -75,6 +90,15 @@ export const Chatbot = () => {
     if (e.key === "Enter") {
       handleSend();
     }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setInput(suggestion);
+    
+    // Add a small delay to make it feel more natural
+    setTimeout(() => {
+      handleSend();
+    }, 100);
   };
 
   return (
@@ -115,6 +139,25 @@ export const Chatbot = () => {
             </div>
           ))}
         </div>
+        
+        {messages.length === 1 && (
+          <div className="mt-4 space-y-2">
+            <p className="text-xs text-gray-500 font-medium flex items-center">
+              <Lightbulb className="h-3 w-3 mr-1" /> SUGGESTED QUESTIONS
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {suggestions.map((suggestion, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleSuggestionClick(suggestion)}
+                  className="text-xs bg-blue-100 hover:bg-blue-200 text-blue-800 px-2 py-1 rounded-full transition-colors"
+                >
+                  {suggestion}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </ScrollArea>
       
       <div className="p-4 border-t border-gray-200">

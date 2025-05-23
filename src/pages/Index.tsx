@@ -1,37 +1,12 @@
 
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Zap, BarChart3, DollarSign, Settings, MessageCircle, X } from "lucide-react";
-import { Chatbot } from "@/components/Chatbot";
+import { BarChart3, DollarSign, Settings } from "lucide-react";
 
 const Index = () => {
-  const [showChatbot, setShowChatbot] = useState(false);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-white/20 sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <Zap className="h-8 w-8 text-blue-600" />
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                SmartEnergy
-              </span>
-            </div>
-            <div className="hidden md:flex space-x-6">
-              <Link to="/" className="text-gray-700 hover:text-blue-600 transition-colors">Home</Link>
-              <Link to="/appliances" className="text-gray-700 hover:text-blue-600 transition-colors">Appliances</Link>
-              <Link to="/bills" className="text-gray-700 hover:text-blue-600 transition-colors">Generate Bill</Link>
-              <Link to="/profile" className="text-gray-700 hover:text-blue-600 transition-colors">Profile</Link>
-              <Link to="/login" className="text-gray-700 hover:text-blue-600 transition-colors">Login</Link>
-            </div>
-          </div>
-        </div>
-      </nav>
-
+    <div>
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-20">
         <div className="text-center max-w-4xl mx-auto">
@@ -86,39 +61,6 @@ const Index = () => {
           </Card>
         </div>
       </section>
-
-      {/* Chatbot Widget */}
-      <div className="fixed bottom-6 right-6 z-50">
-        {!showChatbot && (
-          <Button
-            onClick={() => setShowChatbot(true)}
-            className="rounded-full w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg animate-bounce"
-          >
-            <MessageCircle className="h-6 w-6" />
-          </Button>
-        )}
-        
-        {showChatbot && (
-          <Card className="w-80 h-96 shadow-xl animate-scale-in">
-            <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
-              <div className="flex justify-between items-center">
-                <CardTitle className="text-lg">Energy Assistant</CardTitle>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowChatbot(false)}
-                  className="text-white hover:bg-white/20"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent className="p-0">
-              <Chatbot />
-            </CardContent>
-          </Card>
-        )}
-      </div>
     </div>
   );
 };

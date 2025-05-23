@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Zap, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Zap, Mail, Lock, Eye, EyeOff, User, Calendar, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Login() {
@@ -15,7 +15,9 @@ export default function Login() {
     email: "",
     password: "",
     confirmPassword: "",
-    fullName: ""
+    fullName: "",
+    phone: "",
+    birthdate: ""
   });
   const { toast } = useToast();
 
@@ -40,7 +42,7 @@ export default function Login() {
     });
     
     // Reset form
-    setFormData({ email: "", password: "", confirmPassword: "", fullName: "" });
+    setFormData({ email: "", password: "", confirmPassword: "", fullName: "", phone: "", birthdate: "" });
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -48,7 +50,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
+    <div className="flex items-center justify-center p-4 my-8">
       <div className="w-full max-w-md">
         <div className="text-center mb-8 animate-fade-in">
           <div className="flex items-center justify-center space-x-2 mb-4">
@@ -69,11 +71,11 @@ export default function Login() {
         </div>
 
         <Card className="border-0 shadow-2xl bg-white/80 backdrop-blur-sm animate-scale-in">
-          <CardHeader className="space-y-1">
+          <CardHeader className="space-y-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
             <CardTitle className="text-2xl text-center">
               {isSignUp ? "Sign Up" : "Sign In"}
             </CardTitle>
-            <CardDescription className="text-center">
+            <CardDescription className="text-center text-white/80">
               {isSignUp 
                 ? "Enter your information to create an account" 
                 : "Enter your credentials to access your account"
@@ -81,19 +83,23 @@ export default function Login() {
             </CardDescription>
           </CardHeader>
           
-          <CardContent>
+          <CardContent className="pt-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               {isSignUp && (
                 <div className="space-y-2">
                   <Label htmlFor="fullName">Full Name</Label>
-                  <Input
-                    id="fullName"
-                    type="text"
-                    placeholder="John Smith"
-                    value={formData.fullName}
-                    onChange={(e) => handleInputChange('fullName', e.target.value)}
-                    required={isSignUp}
-                  />
+                  <div className="relative">
+                    <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Input
+                      id="fullName"
+                      type="text"
+                      placeholder="John Smith"
+                      className="pl-10"
+                      value={formData.fullName}
+                      onChange={(e) => handleInputChange('fullName', e.target.value)}
+                      required={isSignUp}
+                    />
+                  </div>
                 </div>
               )}
               
@@ -137,52 +143,87 @@ export default function Login() {
               </div>
               
               {isSignUp && (
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                    <Input
-                      id="confirmPassword"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="••••••••"
-                      className="pl-10"
-                      value={formData.confirmPassword}
-                      onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                      required={isSignUp}
-                    />
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmPassword">Confirm Password</Label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Input
+                        id="confirmPassword"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="••••••••"
+                        className="pl-10"
+                        value={formData.confirmPassword}
+                        onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                        required={isSignUp}
+                      />
+                    </div>
                   </div>
-                </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone Number</Label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                        <Input
+                          id="phone"
+                          type="tel"
+                          placeholder="+1 (555) 000-0000"
+                          className="pl-10"
+                          value={formData.phone}
+                          onChange={(e) => handleInputChange('phone', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="birthdate">Date of Birth</Label>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                        <Input
+                          id="birthdate"
+                          type="date"
+                          className="pl-10"
+                          value={formData.birthdate}
+                          onChange={(e) => handleInputChange('birthdate', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </>
               )}
               
               <Button 
                 type="submit" 
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all mt-6"
               >
                 {isSignUp ? "Create Account" : "Sign In"}
               </Button>
             </form>
-            
-            <div className="mt-6 text-center space-y-2">
-              <p className="text-gray-600">
+          </CardContent>
+          
+          <CardFooter className="flex flex-col space-y-4 border-t border-gray-100 pt-4">
+            <div className="text-center">
+              <p className="text-sm text-gray-600">
                 {isSignUp ? "Already have an account?" : "Don't have an account?"}
+                <Button
+                  variant="link"
+                  onClick={() => setIsSignUp(!isSignUp)}
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  {isSignUp ? "Sign in here" : "Sign up here"}
+                </Button>
               </p>
-              <Button
-                variant="link"
-                onClick={() => setIsSignUp(!isSignUp)}
-                className="text-blue-600 hover:text-blue-800"
-              >
-                {isSignUp ? "Sign in here" : "Sign up here"}
-              </Button>
             </div>
             
             {!isSignUp && (
-              <div className="mt-4 text-center">
+              <div className="text-center">
                 <Button variant="link" className="text-sm text-gray-500 hover:text-gray-700">
                   Forgot your password?
                 </Button>
               </div>
             )}
-          </CardContent>
+          </CardFooter>
         </Card>
       </div>
     </div>
